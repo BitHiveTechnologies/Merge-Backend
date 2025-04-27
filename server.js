@@ -20,6 +20,9 @@ app.use('/api/hackathons', require('./routes/hackathons'));
 app.use('/api/workshops', require('./routes/workshops'));
 app.use('/api/user', require('./routes/user'));
 
-// ❌ Remove app.listen(PORT)
-// ✅ Export the app as a serverless handler
-module.exports = serverless(app);
+const PORT = process.env.PORT;
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server started on port ${PORT}`);
+});
+
