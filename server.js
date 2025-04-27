@@ -18,6 +18,7 @@ app.use('/api/courses', require('./routes/courses'));
 app.use('/api/hackathons', require('./routes/hackathons'));
 app.use('/api/workshops', require('./routes/workshops'));
 app.use('/api/user', require('./routes/user'));
+app.use('/api/admin', require('./routes/admin'));
 
 const PORT = process.env.PORT;
 

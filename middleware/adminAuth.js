@@ -1,4 +1,4 @@
-// middleware/auth.js
+// middleware/adminAuth.js
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
@@ -10,7 +10,10 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.user;  // { id?, admin? }
+    // Must have been issued via /admin-login
+    if (!decoded.admin) {
+      return res.status(403).json({ msg: 'Unauthorized: Admins only' });
+    }
     next();
   } catch (err) {
     res.status(401).json({ msg: 'Token is not valid' });
