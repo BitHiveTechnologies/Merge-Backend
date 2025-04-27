@@ -22,4 +22,4 @@ app.use('/api/user', require('../routes/user'));
 
 // ❌ Remove app.listen(PORT)
 // ✅ Export the app as a serverless handler
-module.exports.handler = serverless(app);
+module.exports = serverless(app);
