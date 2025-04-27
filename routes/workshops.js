@@ -4,6 +4,7 @@ const auth = require('../middleware/auth');
 const Workshop = require('../models/workshop');
 const RegW = require('../models/workshopRegistration');
 const PastW = require('../models/pastWorkshop');
+const pastWorkshop = require('../models/pastWorkshop');
 
 
 router.post('/', async (req, res) => {
@@ -21,6 +22,19 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   const list = await Workshop.find();
   res.json(list);
+});
+
+// POST past workshops
+
+router.post('/past', async (req, res) => {
+  try {
+    const workshop = new pastWorkshop(req.body);
+    await workshop.save();
+    res.status(201).json(workshop);
+  } catch (err) {
+    console.error(err.message);
+    res.status(400).json({ msg: 'Invalid data' });
+  }
 });
 
 // GET past workshops
