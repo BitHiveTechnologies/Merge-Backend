@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const serverless = require('serverless-http'); // 👉 important for Vercel
 
 const app = express();
 
