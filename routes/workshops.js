@@ -128,7 +128,7 @@ router.delete('/:id', auth, async (req, res) => {
 router.put('/past/:id', auth, async (req, res) => {
   try {
     const updates = req.body;
-    const past = await PastWorkshop.findByIdAndUpdate(
+    const past = await pastWorkshop.findByIdAndUpdate(
       req.params.id,
       { $set: updates },
       { new: true, runValidators: true }
@@ -146,7 +146,7 @@ router.put('/past/:id', auth, async (req, res) => {
 // Delete a past workshop record
 router.delete('/past/:id', auth, async (req, res) => {
   try {
-    const past = await PastWorkshop.findByIdAndDelete(req.params.id);
+    const past = await pastWorkshop.findByIdAndDelete(req.params.id);
     if (!past) {
       return res.status(404).json({ msg: 'Past workshop not found' });
     }
