@@ -43,6 +43,11 @@ router.get('/past', async (req, res) => {
   res.json(past);
 });
 
+router.get('/past/:id', async (req, res) => {
+  const past = await PastW.findById(req.params.id);
+  res.json(past);
+});
+
 // GET upcoming workshops
 router.get('/upcoming', async (req, res) => {
   const upcoming = await Workshop.find({ isUpcoming: true });
