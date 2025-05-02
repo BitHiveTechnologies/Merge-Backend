@@ -85,4 +85,71 @@ router.post('/register/:id', auth, async (req, res) => {
   res.json(reg);
 });
 
+// Update a workshop
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const updates = req.body;
+    const workshop = await Workshop.findByIdAndUpdate(
+      req.params.id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+    if (!workshop) {
+      return res.status(404).json({ msg: 'Workshop not found' });
+    }
+    res.json(workshop);
+  } catch (err) {
+    console.error('Workshop update error:', err.message);
+    res.status(400).json({ msg: 'Invalid data or update failed' });
+  }
+});
+
+// Delete a workshop (and its registrations)
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const workshop = await Workshop.findByIdAndDelete(req.params.id);
+    if (!workshop) {
+      return res.status(404).json({ msg: 'Workshop not found' });
+    }
+    await RegW.deleteMany({ workshopId: req.params.id });
+    res.json({ msg: 'Workshop deleted' });
+  } catch (err) {
+    console.error('Workshop delete error:', err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Update a past workshop record
+router.put('/past/:id', auth, async (req, res) => {
+  try {
+    const updates = req.body;
+    const past = await PastWorkshop.findByIdAndUpdate(
+      req.params.id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+    if (!past) {
+      return res.status(404).json({ msg: 'Past workshop not found' });
+    }
+    res.json(past);
+  } catch (err) {
+    console.error('Past workshop update error:', err.message);
+    res.status(400).json({ msg: 'Invalid data or update failed' });
+  }
+});
+
+// Delete a past workshop record
+router.delete('/past/:id', auth, async (req, res) => {
+  try {
+    const past = await PastWorkshop.findByIdAndDelete(req.params.id);
+    if (!past) {
+      return res.status(404).json({ msg: 'Past workshop not found' });
+    }
+    res.json({ msg: 'Past workshop deleted' });
+  } catch (err) {
+    console.error('Past workshop delete error:', err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;

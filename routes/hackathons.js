@@ -44,5 +44,39 @@ router.post('/register/:id', auth, async (req, res) => {
   res.json(reg);
 });
 
+// Update a hackathon
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const updates = req.body;
+    const hackathon = await Hackathon.findByIdAndUpdate(
+      req.params.id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+    if (!hackathon) {
+      return res.status(404).json({ msg: 'Hackathon not found' });
+    }
+    res.json(hackathon);
+  } catch (err) {
+    console.error('Hackathon update error:', err.message);
+    res.status(400).json({ msg: 'Invalid data or update failed' });
+  }
+});
+
+// Delete a hackathon (and its registrations)
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const hackathon = await Hackathon.findByIdAndDelete(req.params.id);
+    if (!hackathon) {
+      return res.status(404).json({ msg: 'Hackathon not found' });
+    }
+    await Reg.deleteMany({ hackathonId: req.params.id });
+    res.json({ msg: 'Hackathon deleted' });
+  } catch (err) {
+    console.error('Hackathon delete error:', err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;
 
