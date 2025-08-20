@@ -12,6 +12,7 @@ const CourseSchema = new mongoose.Schema({
   title: String,
   description: String,
   instructor: String,
+  instructorImg: String,
   duration: String,
   level: String,
   rating: Number,
